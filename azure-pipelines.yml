@@ -1,3 +1,10 @@
+pr:
+  branches:
+    inclue:
+      - main
+      - development
+
+
 trigger:
   branches:
     include:
