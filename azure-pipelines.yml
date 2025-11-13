@@ -1,6 +1,6 @@
 pr:
   branches:
-    inclue:
+    include:
       - main
       - development
 
