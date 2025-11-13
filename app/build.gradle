@@ -1,6 +1,7 @@
 plugins {
     id 'application'
     id 'jacoco'
+    id 'org.sonarqube' version '4.4.1.3373'
 }
 
 repositories {
@@ -10,11 +11,10 @@ repositories {
 
 dependencies {
     testImplementation libs.junit.jupiter
-
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
     implementation libs.guava
     implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'com.google.guava:guava:32.1.3-jre'
 }
 
 java {
@@ -63,3 +63,9 @@ jacocoTestReport.finalizedBy jacocoTestCoverageVerification
 
 
 
+sonarqube {
+    properties {
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/test/jacocoTestReport.xml"
+    }
+}
