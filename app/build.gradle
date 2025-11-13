@@ -14,11 +14,12 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     implementation libs.guava
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -27,10 +28,18 @@ application {
 }
 
 jacoco {
-    toolVersion = "0.8.7"
+    toolVersion = "0.8.10"
 }
 
 tasks.named('test') {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
+}
+
+task showProjectInfo {
+    doLast {
+        println "Project Name: $project.name"
+        println "Java Version: ${java.toolchain.languageVersion.get()}"
+        println "Main Class: ${application.mainClass.get()}"
+    }
 }
