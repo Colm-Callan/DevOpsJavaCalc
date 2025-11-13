@@ -41,8 +41,8 @@ jacocoTestReport {
     reports {
         xml.required = true
         xml.outputLocation = file("$buildDir/reports/jacoco/test/jacocoTestReport.xml")
-        csv.enabled = false
-        html.enabled = true
+        csv.required = false
+        html.required = true
     }
 }
 
