@@ -19,31 +19,23 @@ variables:
   SONARCLOUD_PROJECT_KEY: 'Colm-Callan_DevOpsJavaCalc'
 
 steps:
-
-- task: SonarCloudPrepare@2
-  displayName: 'Prepare SonarCloud analysis'
-  inputs:
-    SonarCloud: 'SonarCloudServiceConnection'
-    organization: '$(SONARCLOUD_ORG)'
-    scannerMode: 'Other'
-    configMode: 'manual'
-    projectKey: '$(SONARCLOUD_PROJECT_KEY)'
-    projectName: '$(SONARCLOUD_PROJECT_KEY)'
-    extraProperties: |
-      sonar.java.coveragePlugin=jacoco
-      sonar.coverage.jacoco.xmlReportPaths=app/build/reports/jacoco/test/jacocoTestReport.xml
-
 - task: Gradle@3
   displayName: 'Gradle: clean test + jacoco report (enforce code coverage)'
   inputs:
-    gradleWrapperFile: 'gradlew'
-    gradleOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '21'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/build/test-results/test/TEST-*.xml'
-    tasks: 'clean test jacocoTestReport jacocoTestCoverageVerification'
+  workingDirectory: 'app'
+  gradleWrapperFile: 'gradlew'
+  gradleOptions: '-Xmx3072m'
+  javaHomeOption: 'JDKVersion'
+  jdkVersionOption: '21'
+  jdkArchitectureOption: 'x64'
+  publishJUnitResults: true
+  testResultsFiles: '**/build/test-results/test/TEST-*.xml'
+  tasks: >
+   clean test jacocoTestReport jacocoTestCoverageVerification sonarqube
+   -Dsonar.host.url=https://sonarcloud.io
+   -Dsonar.organization=$(SONARCLOUD_ORG)
+   -Dsonar.projectKey=$(SONARCLOUD_PROJECT_KEY)
+   -Dsonar.login=$(SONAR_TOKEN)
 
 - task: PublishTestResults@2
   displayName: 'Publish JUnit test result'
@@ -59,8 +51,3 @@ steps:
     summaryFileLocation: 'app/build/reports/jacoco/test/jacocoTestReport.xml'
     reportDirectory: 'app/build/reports/jacoco/test'
     failIfCoverageEmpty: true
-
-- task: SonarQubePublish@2
-  displayName: 'Publish SonarQube Quality Gate'
-  inputs:
-    pollingTimeoutSec: '300'
