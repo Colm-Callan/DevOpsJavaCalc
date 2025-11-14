@@ -24,7 +24,7 @@ java {
 }
 
 application {
-    mainClass = 'calculator.Calculator'
+    mainClass = 'org.calculator.Calculator'
 }
 
 jacoco {
