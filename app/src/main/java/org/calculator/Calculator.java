@@ -9,12 +9,12 @@ public class Calculator {
         return (double) a / b;
     }
 
-        public static void main(String[] args) {
+    public static void main(String[] args) {
         Calculator calc = new Calculator();
         int a = 9, b = 3;
         System.out.println("add: " + calc.add(a, b));
         System.out.println("subtract: " + calc.subtract(a, b));
         System.out.println("multiply: " + calc.multiply(a, b));
         System.out.println("divide: " + calc.divide(a, b));
-}
+    }
 }
